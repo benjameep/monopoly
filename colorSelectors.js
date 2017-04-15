@@ -13,7 +13,7 @@ function createColorSelectors(numPlayers){
 		var id = "colorBox"+i
 		$("form").append(
 `<div id='player#${i}' class='player'>
-	<input type='text' placeholder='player${i+1}' maxlength="10"/>
+	<input type='text' placeholder='player${i+1}' maxlength="7"/>
 	<div id='${id}' class='colorBox'></div>
 </div>`)
 		createColors(colors,"#"+id)
@@ -53,11 +53,19 @@ var onClick = function () {
 	$("input:disabled").next().css("opacity","0.1")
 	$("input:not(:disabled)").next().css("opacity","1")
 
-	if(selectedColors.length >= playerCount){
+	if(selectedColors.filter(color => color).length >= playerCount){
 		$("#final").attr("hidden",false)
 	}
 }
 
 function submit(){
-
+    var names = $('input[type=text]').get().map((node,i) => $(node).val()?$(node).val():"player"+(i+1))
+    var players = selectedColors.reduce((arr,color,i) => {
+        arr.push({name:names[i], color:color})
+        return arr
+    },[])
+    $('main').remove()
+    $('*').css({margin:0,padding:0})
+    $('body').prepend(`<canvas id = "canvas"></canvas>`)
+    startGame(players)
 }

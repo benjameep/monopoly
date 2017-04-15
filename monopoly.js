@@ -1,8 +1,4 @@
-let screen = document.getElementById("canvas");
-let ctx = screen.getContext("2d");
-
-var board
-var game
+let screen, ctx, board, game
 var PROP_HEIGHT = 0.8 // % of gridsize*2
 var PROP_BODY = 0.75 // % of gridsize
 var PADDING = 0.07 // % of screen's height
@@ -247,8 +243,9 @@ class Property{
 
 class Player{
     
-    constructor(number,numPlayers,color){
-        this.color = color || "#999"
+    constructor(number,numPlayers,info){
+        this.color = info.color || "#999"
+        this.name = info.name
         this.number = number
         this.initPosition(numPlayers)
         this.props = {}
@@ -271,7 +268,7 @@ class Player{
     draw(grow = 1){
     	let growWidth = (this.width*(grow-1))
     	let growHeight = (this.height*(grow-1))
-        ctx.fillStyle = this.color
+        ctx.fillStyle = this.color//"#999"
         ctx.fillRect(this.x-growWidth/2,this.y-growHeight/2,this.width+growWidth,this.height+growHeight)
         ctx.lineWidth = board.gridSize*0.05
         ctx.strokeStyle = "#000"
@@ -280,7 +277,11 @@ class Player{
         ctx.textAlign = "center"
         ctx.font = board.gridSize*.4 + "px Arial"
         ctx.textBaseline = "middle"
-        ctx.fillText(this.balance.toFixed(1),this.x+this.width/2,this.y+this.height*.4)
+        ctx.fillText(this.balance.toFixed(1),this.x+this.width/2,this.y+this.height*.5)
+        ctx.fillStyle = this.color
+//        ctx.fillRect(this.x+(this.width*(1-.7))/2,this.y+this.height*.07,this.width*.7,this.height*.3)
+        ctx.fillStyle = "#FFF"
+        ctx.fillText(this.name,this.x+this.width/2,this.y+this.height*.2)
         this.drawProps()
     }
     drawProps(){
@@ -345,10 +346,8 @@ class Player{
 }
 
 class Game{
-    constructor(numPlayers){
-        this.players = []
-        for(let i = 0; i < numPlayers; i++)
-            this.players[i] = new Player(i,numPlayers)
+    constructor(players){
+        this.players = players.map((player,i) => new Player(i,players.length,player))
     }
     draw(){
         for(let i = 0; i < this.players.length; i++)
@@ -420,7 +419,7 @@ function whichProp(mX,mY){
 }
 
 /* MOUSE HANDLERS */ 
-{
+function mouseHandlers(){
     let mouseIsDown = false
     let start = { x:0, y:0 }
     let prop = -1
@@ -484,15 +483,19 @@ function DRAW(){
 
 }
 
-window.onresize = function(){
+
+function startGame(players){
+    screen = document.getElementById("canvas");
+    ctx = screen.getContext("2d");
+    mouseHandlers()
+    window.onresize = function(){
+        board = new Board()
+        board.initProps()
+        game.resize()
+        DRAW()
+    }
     board = new Board()
-    board.initProps()
-    game.resize()
-    DRAW()
-}
-window.onload = function(){
-    board = new Board()
-    game = new Game(4)
+    game = new Game(players)
     board.initProps()
     DRAW()
 }

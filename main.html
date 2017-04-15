@@ -13,11 +13,12 @@
 	</div><br/><br/><br/>
 	<form>
 	</form>
-	<button id="final" onclick="('submit()')" hidden>GO!</button>
+	<button id="final" onclick="submit()" hidden>GO!</button>
 </main>
 <script src="https://use.fontawesome.com/d3f06be768.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="http://www.jsviews.com/download/jsrender.min.js"></script>
+<script src="./monopoly.js"></script>
 <script src="colorSelectors.js"></script>
 <script>
 	$(".btn-group button").click(function(){
@@ -25,8 +26,6 @@
 		$(btn).attr("data-checked",false)
 	  })
 	  $(this).attr("data-checked",true)
-	  console.log("hi")
 	  createColorSelectors($(this).text())
 	})
-//	createColorSelectors(3)
 </script>
