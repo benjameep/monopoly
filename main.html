@@ -1,0 +1,32 @@
+<link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato:900">
+<main>
+	<header>
+		<h1>MONOPOLY HACKER</h1>
+	</header>
+	<div class="btn-group">
+		<button data-checked=false value="2">2</button>
+		<button data-checked=false value="3">3</button>
+		<button data-checked=false value="4">4</button>
+		<button data-checked=false value="5">5</button>
+		<button data-checked=false value="6">6</button>
+	</div><br/><br/><br/>
+	<form>
+	</form>
+	<button id="final" onclick="('submit()')" hidden>GO!</button>
+</main>
+<script src="https://use.fontawesome.com/d3f06be768.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="http://www.jsviews.com/download/jsrender.min.js"></script>
+<script src="colorSelectors.js"></script>
+<script>
+	$(".btn-group button").click(function(){
+	  $(".btn-group button").each( (i,btn) => {
+		$(btn).attr("data-checked",false)
+	  })
+	  $(this).attr("data-checked",true)
+	  console.log("hi")
+	  createColorSelectors($(this).text())
+	})
+//	createColorSelectors(3)
+</script>
